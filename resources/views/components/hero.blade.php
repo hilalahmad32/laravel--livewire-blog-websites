@@ -8,7 +8,7 @@
           <h3>{{ $posts->title }}</h3>
           <h1>{{ $posts->categorys->category_name }}</h1>
           <h4>December 12, 2018</h4>
-          <button class="btn btn-success">Read More ....</button>
+          <a class="button" href="{{ route('post-detail', ['id'=>$posts->id]) }}">Read More <i class="ti-arrow-right"></i></a>
         </div>
       </div>
     </div>

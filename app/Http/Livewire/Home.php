@@ -14,6 +14,7 @@ class Home extends Component
     public $posts;
     public $pages=2;
     public $pageCount;
+    public $popularPost;
     use WithPagination;
     public function render()
     {
@@ -23,6 +24,8 @@ class Home extends Component
         $this->posts=Blog::orderBy('id','DESC')->limit(6)->get();
         $categorysRight=Category::orderBy('id','DESC')->paginate($this->pages);
         $this->pageCount=Category::get();
+        // this is popular post
+        $this->popularPost=Blog::orderBy('id','DESC')->where('views' ,'>',40)->limit(3)->get();
         return view('livewire.home',compact('categorysRight'))->layout('layouts.app');
     }
 

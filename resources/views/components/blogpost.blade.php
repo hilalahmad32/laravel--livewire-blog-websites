@@ -1,5 +1,5 @@
 <!--================ Start Blog Post Area =================-->
-@props(['posts','categorysRight','pageCount','pages'])
+@props(['posts','categorysRight','pageCount','pages','popularPost'])
 <section class="blog-post-area section-margin mt-4">
     <div class="container">
         <div class="row">
@@ -17,12 +17,12 @@
                         </ul>
                     </div>
                     <div class="details mt-20">
-                        <a href="blog-single.html">
+                        <a href="{{ route('post-detail', ['id'=>$post->id]) }}">
                             <h3>{{$post->title}}</h3>
                         </a>
-                        <p class="tag-list-inline">Tag: <a href="#">{{ $post->categorys->category_name }}</a></p>
+                        <p class="tag-list-inline">Tag: <a href="{{ route('category-post', ['id'=>$post->categorys->id]) }}">{{ $post->categorys->category_name }}</a></p>
                         <p>{{ $post->content }}</p>
-                        <a class="button" href="#">Read More <i class="ti-arrow-right"></i></a>
+                        <a class="button" href="{{ route('post-detail', ['id'=>$post->id]) }}">Read More <i class="ti-arrow-right"></i></a>
                     </div>
                 </div>
                 @empty
@@ -76,7 +76,7 @@
                         <ul class="cat-list mt-20">
                             @forelse ($categorysRight as $category)
                             <li>
-                                <a href="#" class="d-flex justify-content-between">
+                                <a href="{{ route('category-post', ['id'=>$category->id]) }}" class="d-flex justify-content-between">
                                     <p>{{ $category->category_name }}</p>
                                     <p>({{ $category->posts }})</p>
                                 </a>
@@ -90,9 +90,11 @@
                             </li>
                             @endforelse
                             @if ($pages >= count($pageCount))
-                            <a class="btn btn-dark text-white  btn-sm" disabled>Load More <i class="ti-arrow-right"></i></a>
+                            <a class="btn btn-dark text-white  btn-sm" disabled>Load More <i
+                                    class="ti-arrow-right"></i></a>
                             @else
-                            <a class="btn btn-success text-white btn-sm" wire:click='loadMore'>Load More <i class="ti-arrow-right"></i></a>
+                            <a class="btn btn-success text-white btn-sm" wire:click='loadMore'>Load More <i
+                                    class="ti-arrow-right"></i></a>
 
                             @endif
                         </ul>
@@ -101,6 +103,22 @@
                     <div class="single-sidebar-widget popular-post-widget">
                         <h4 class="single-sidebar-widget__title">Popular Post</h4>
                         <div class="popular-post-list">
+                            @forelse ($popularPost as $post)
+                            <div class="single-post-list">
+                                <div class="thumb">
+                                    <img class="card-img rounded-0" src="{{ asset('storage/'.$post->thumb) }}" alt="">
+                                    <ul class="thumb-info">
+                                        <li><a href="{{ route('post-detail', ['id'=>$post->id]) }}">{{ $post->admins->roll == 1 ? 'Admin' :$post->admins->fullname }}</a></li>
+                                        <li><a href="#">Dec 15</a></li>
+                                    </ul>
+                                </div>
+                                <div class="details mt-20">
+                                    <a href="{{ route('post-detail', ['id'=>$post->id]) }}">
+                                        <h6>{{ $post->title }}</h6>
+                                    </a>
+                                </div>
+                            </div>
+                            @empty
                             <div class="single-post-list">
                                 <div class="thumb">
                                     <img class="card-img rounded-0" src="img/blog/thumb/thumb1.png" alt="">
@@ -115,67 +133,9 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="single-post-list">
-                                <div class="thumb">
-                                    <img class="card-img rounded-0" src="img/blog/thumb/thumb2.png" alt="">
-                                    <ul class="thumb-info">
-                                        <li><a href="#">Adam Colinge</a></li>
-                                        <li><a href="#">Dec 15</a></li>
-                                    </ul>
-                                </div>
-                                <div class="details mt-20">
-                                    <a href="blog-single.html">
-                                        <h6>Tennessee outback steakhouse the
-                                            worker diagnosed</h6>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="single-post-list">
-                                <div class="thumb">
-                                    <img class="card-img rounded-0" src="img/blog/thumb/thumb3.png" alt="">
-                                    <ul class="thumb-info">
-                                        <li><a href="#">Adam Colinge</a></li>
-                                        <li><a href="#">Dec 15</a></li>
-                                    </ul>
-                                </div>
-                                <div class="details mt-20">
-                                    <a href="blog-single.html">
-                                        <h6>Tennessee outback steakhouse the
-                                            worker diagnosed</h6>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            @endforelse
 
-                    <div class="single-sidebar-widget tag_cloud_widget">
-                        <h4 class="single-sidebar-widget__title">Popular Post</h4>
-                        <ul class="list">
-                            <li>
-                                <a href="#">project</a>
-                            </li>
-                            <li>
-                                <a href="#">love</a>
-                            </li>
-                            <li>
-                                <a href="#">technology</a>
-                            </li>
-                            <li>
-                                <a href="#">travel</a>
-                            </li>
-                            <li>
-                                <a href="#">software</a>
-                            </li>
-                            <li>
-                                <a href="#">life style</a>
-                            </li>
-                            <li>
-                                <a href="#">design</a>
-                            </li>
-                            <li>
-                                <a href="#">illustration</a>
-                            </li>
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>

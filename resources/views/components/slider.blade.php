@@ -9,7 +9,7 @@
                     <img class="card-img rounded-0" src="{{ asset('storage/'.$category->image) }}" alt="">
                 </div>
                 <div class="blog__slide__content">
-                    <a class="blog__slide__label" href="#">{{ $category->category_name }}</a>
+                    <a class="blog__slide__label" href="{{ route('category-post', ['id'=>$category->id]) }}">{{ $category->category_name }}</a>
 
                 </div>
             </div>
