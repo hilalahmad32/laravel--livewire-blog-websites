@@ -10,7 +10,7 @@
                 <div class="col-lg-8">
                     <div class="main_blog_details">
                         <img class="img-fluid" src="{{ asset('storage/'.$posts->image) }}" alt="">
-                        <a >
+                        <a>
                             <h4>{{ $posts->title }}</h4>
                         </a>
                         <div class="user_details">
@@ -33,7 +33,7 @@
                             <a href="#"><span class="align-middle mr-2"><i class="ti-heart"></i></span>Lily and 4 people
                                 like this</a>
                             <a class="justify-content-sm-center ml-sm-auto mt-sm-0 mt-2" href="#"><span
-                                    class="align-middle mr-2"><i class="ti-themify-favicon"></i></span>06 Comments</a>
+                                    class="align-middle mr-2"><i class="ti-themify-favicon"></i></span>{{ count($comments) }} Comments</a>
                             <div class="news_socail ml-sm-auto mt-sm-0 mt-2">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                                 <a href="#"><i class="fab fa-twitter"></i></a>
@@ -43,127 +43,60 @@
                         </div>
                     </div>
                     <div class="comments-area">
-                        <h4>05 Comments</h4>
+                        <h4>{{ count($comments) }} Comments</h4>
+                        @foreach ($comments as $comment)
                         <div class="comment-list">
                             <div class="single-comment justify-content-between d-flex">
                                 <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="img/blog/c1.jpg" alt="">
-                                    </div>
                                     <div class="desc">
-                                        <h5><a href="#">Emilly Blunt</a></h5>
+                                        <h5><a href="#">{{ $comment->name }}</a></h5>
                                         <p class="date">December 4, 2017 at 3:12 pm </p>
                                         <p class="comment">
-                                            Never say goodbye till the end comes!
+                                           {{$comment->comment}}
                                         </p>
                                     </div>
                                 </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
                             </div>
                         </div>
-                        <div class="comment-list left-padding">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="img/blog/c2.jpg" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Elsie Cunningham</a></h5>
-                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list left-padding">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="img/blog/c3.jpg" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Annie Stephens</a></h5>
-                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="img/blog/c4.jpg" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Maria Luna</a></h5>
-                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="img/blog/c5.jpg" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Ina Hayes</a></h5>
-                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-                                        <p class="comment">
-                                            Never say goodbye till the end comes!
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="reply-btn">
-                                    <a href="" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="comment-form">
                         <h4>Leave a Reply</h4>
-                        <form>
+                        <form wire:submit.prevent='submitComment'>
                             <div class="form-group form-inline">
                                 <div class="form-group col-lg-6 col-md-6 name">
-                                    <input type="text" class="form-control" id="name" placeholder="Enter Name"
-                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
+                                    <input type="text" class="form-control" wire:model="name" id="name"
+                                        placeholder="Enter Name" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Enter Name'">
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group col-lg-6 col-md-6 email">
-                                    <input type="email" class="form-control" id="email"
+                                    <input type="email" wire:model='email' class="form-control" id="email"
                                         placeholder="Enter email address" onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Enter email address'">
+                                    @error('record')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="subject" placeholder="Subject"
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
+                                <input type="text" class="form-control" id="subject" placeholder="Website (optional)"
+                                    onfocus="this.placeholder = ''" wire:model='website'
+                                    onblur="this.placeholder = 'Subject'">
+
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege"
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"
-                                    required=""></textarea>
+                                <textarea class="form-control mb-10" wire:model="message" rows="5" name="message"
+                                    placeholder="Messege" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Messege'" required=""></textarea>
+                                @error('message')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+
                             </div>
-                            <a href="#" class="button submit_btn">Post Comment</a>
+                            <button type="sbumit" class="button submit_btn">Post Comment</button>
                         </form>
                     </div>
                 </div>

@@ -19,4 +19,9 @@ class Blog extends Model
     {
         return $this->belongsTo(Admin::class,'admin_id');
     }
+
+    // public function posts()
+    // {
+    //     return $this->belongsTo(Post::class,'post')
+    // }
 }
