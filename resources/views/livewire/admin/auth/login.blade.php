@@ -19,10 +19,6 @@
                   <input type="password" wire:model="password" class="form-control" id="" placeholder="Password">
                 </div>
               </div>
-              <div class="form-check form-check-flat form-check-primary">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input"> Remember me </label>
-              </div>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
             </form>
           </div>

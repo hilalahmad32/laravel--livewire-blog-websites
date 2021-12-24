@@ -21,41 +21,31 @@
                                 <th>Category</th>
                                 <th>Posts</th>
                                 <th>Status</th>
+                                <th>Image</th>
                                 <th>Status Action</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse ($categorys as $category)
                             <tr>
-                                <td>Jacob</td>
-                                <td>53275531</td>
-                                <td>12 May 2017</td>
-                                <td><label class="badge badge-danger">Pending</label></td>
+                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->category_name }}</td>
+                                <td>{{ $category->posts }}</td>
+                                <td>{{ $category->status }}</td>
+                                <td><img src="{{ asset('storage/'.$category->image) }}" alt=""></td>
+                                <td>
+                                    <button wire:click='show({{ $category->id }})' class="btn btn-success">Edit</button>
+                                    <button wire:click='delete({{ $category->id }})'
+                                        class="btn btn-danger">Delete</button>
+                                </td>
+
                             </tr>
-                            <tr>
-                                <td>Messsy</td>
-                                <td>53275532</td>
-                                <td>15 May 2017</td>
-                                <td><label class="badge badge-warning">In progress</label></td>
-                            </tr>
-                            <tr>
-                                <td>John</td>
-                                <td>53275533</td>
-                                <td>14 May 2017</td>
-                                <td><label class="badge badge-info">Fixed</label></td>
-                            </tr>
-                            <tr>
-                                <td>Peter</td>
-                                <td>53275534</td>
-                                <td>16 May 2017</td>
-                                <td><label class="badge badge-success">Completed</label></td>
-                            </tr>
-                            <tr>
-                                <td>Dave</td>
-                                <td>53275535</td>
-                                <td>20 May 2017</td>
-                                <td><label class="badge badge-warning">In progress</label></td>
-                            </tr>
+                            @empty
+
+                            @endforelse
+
+
                         </tbody>
                     </table>
                 </div>
@@ -66,15 +56,26 @@
 
         @if($showCreateForm == true)
         {{-- create category form --}}
-        <div class="row">
+        <div class="row my-5">
             <div class="col-xl-6 col-lg-6 col-md-8 col-sm-12 offset-xl-3 offset-lg-3 offset-md-2 offset-sm-0">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Add Category Form</h4>
-                        <form>
+                        <form wire:submit.prevent='store'>
                             <label for="category" class="form-label">Category</label>
                             <div class="">
-                                <input type="text" class="form-control" placeholder="Category">
+                                <input type="text" class="form-control" wire:model.lazy="category_name"
+                                    placeholder="Category">
+                                @error('category_name')
+                                <span class="text-danger">{{$message }}</span>
+                                @enderror
+                            </div>
+                            <div class="">
+                                <input type="file" class="form-control form-control-lg" wire:model.lazy="file">
+                                @if ($file)
+                                <img src="{{ $file->temporaryUrl() }}" style="width:70px;height:70px;" alt="">
+
+                                @endif
                             </div>
                             <button type="submit" class="btn btn-primary mr-2 my-2">Submit</button>
                         </form>
@@ -92,10 +93,20 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Update Category Form</h4>
-                        <form>
+                        <form wire:submit.prevent='update({{ $edit_id }})'>
                             <label for="category" class="form-label">Category</label>
                             <div class="">
-                                <input type="text" class="form-control" placeholder="Category">
+                                <input type="text" wire:model='edit_category_name' class="form-control"
+                                    placeholder="Category">
+                            </div>
+                            <div class=" my-4">
+                                <input type="file" wire:model='new_image' class="form-control">
+                                @if ($new_image)
+                                <img src="{{ $new_image->temporaryUrl() }}" style="width:70px;height:70px;" alt="">
+                                @else
+                                <img src="{{ asset('storage/'.$old_image) }}" style="width:70px;height:70px;" alt="">
+
+                                @endif
                             </div>
                             <button type="submit" class="btn btn-primary mr-2 my-2">Update</button>
                         </form>
